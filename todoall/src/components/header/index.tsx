@@ -4,21 +4,30 @@ import { Button } from "@components/button";
 import { DateControl } from "@components/dateControl";
 
 const StyledHeader = styled.header`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  & > * {
+    width: 200px;
+  }
+  .ctn {
+    display: flex;
+    justify-content: flex-end;
+  }
 `;
 
 function Header() {
-	return (
-		<StyledHeader>
-			<h1 className="capitalize dmSans">to do all</h1>
-			<DateControl />
-			<Button color="dark" size="big">
-				<span className="capitalize">about</span>
-			</Button>
-		</StyledHeader>
-	);
+  return (
+    <StyledHeader>
+      <h1 className="capitalize dmSans nowrap">to do all</h1>
+      <DateControl />
+      <div className="ctn">
+        <Button color="dark" size="big">
+          <span className="capitalize">about</span>
+        </Button>
+      </div>
+    </StyledHeader>
+  );
 }
 
 export { Header };
