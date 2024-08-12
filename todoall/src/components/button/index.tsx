@@ -35,7 +35,7 @@ const StyledButton = styled.button<{ color: string; size: string }>`
 	border-radius: 20px;
 `;
 
-function Button({ color, size, children, event }: Ibutton) {
+function Button({ color, size, children, event }: Ibutton): JSX.Element {
 	return (
 		<StyledButton color={color} size={size} onClick={event}>
 			{children}
