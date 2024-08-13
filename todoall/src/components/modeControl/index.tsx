@@ -89,21 +89,23 @@ function ModeControl() {
 
 	return (
 		<>
-			<StyledModeControl>
-				<ModeButton event={getXYnMode} mode={"all"}>
-					<span className="capitalize">all</span>
-				</ModeButton>
-				<ModeButton event={getXYnMode} mode={"board"}>
-					<span className="capitalize">board</span>
-				</ModeButton>
-				<ModeButton event={getXYnMode} mode={"calendar"}>
-					<span className="capitalize">calendar</span>
-				</ModeButton>
-				<ModeButton event={getXYnMode} mode={"list"}>
-					<span className="capitalize">list</span>
-				</ModeButton>
-				<ModeButtonBG />
-			</StyledModeControl>
+			<nav className="cnt pdb24">
+				<StyledModeControl>
+					<ModeButton event={getXYnMode} mode={"all"}>
+						<span className="capitalize">all</span>
+					</ModeButton>
+					<ModeButton event={getXYnMode} mode={"board"}>
+						<span className="capitalize">board</span>
+					</ModeButton>
+					<ModeButton event={getXYnMode} mode={"calendar"}>
+						<span className="capitalize">calendar</span>
+					</ModeButton>
+					<ModeButton event={getXYnMode} mode={"list"}>
+						<span className="capitalize">list</span>
+					</ModeButton>
+					<ModeButtonBG />
+				</StyledModeControl>
+			</nav>
 		</>
 	);
 }
