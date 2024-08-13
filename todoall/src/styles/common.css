@@ -3,76 +3,80 @@
 
 /* base variable */
 :root {
-  /* size */
-  --base-unit: 8px;
-  /* color */
-  --bg-gray: #ebebeb;
-  --bg-black: #2a2a2a;
-  --rgba-light-gray: rgba(0, 0, 0, 0.04);
-  --rgba-deep-gray: rgba(0, 0, 0, 0.16);
-  --mono-white: #ffffff;
-  --mono-black: #0e0e0e;
-  --point-1-light: #f9a5d6;
-  --point-1-deep: #ff8ccf;
-  --point-2: #bcf975;
-  --point-3: #6bf1d2;
+	/* size */
+	--base-unit: 8px;
+	/* color */
+	--bg-gray: #ebebeb;
+	--bg-black: #2a2a2a;
+	--rgba-light-gray: rgba(0, 0, 0, 0.04);
+	--rgba-deep-gray: rgba(0, 0, 0, 0.16);
+	--mono-white: #ffffff;
+	--mono-black: #0e0e0e;
+	--point-1-light: #f9a5d6;
+	--point-1-deep: #ff8ccf;
+	--point-2: #bcf975;
+	--point-3: #6bf1d2;
 }
 
 /* font */
 /* font face */
 body {
-  font-family: "Noto Sans KR", sans-serif;
-  color: var(--mono-black);
+	font-family: "Noto Sans KR", sans-serif;
+	color: var(--mono-black);
 }
 .dmSans {
-  font-family: "DM Sans", sans-serif;
+	font-family: "DM Sans", sans-serif;
 }
 /* font size */
 h1 {
-  font-size: calc(var(--base-unit) * 6);
+	font-size: calc(var(--base-unit) * 6);
 }
 .title {
-  font-size: calc(var(--base-unit) * 3);
+	font-size: calc(var(--base-unit) * 3);
 }
 body {
-  font-size: calc(var(--base-unit) * 2);
+	font-size: calc(var(--base-unit) * 2);
 }
 .smallBody {
-  font-size: 14px;
+	font-size: 14px;
 }
 .caption {
-  font-size: 12px;
+	font-size: 12px;
 }
 
 /* text */
 .capitalize {
-  text-transform: capitalize;
+	text-transform: capitalize;
 }
 .nowrap {
-  white-space: nowrap;
+	white-space: nowrap;
 }
 
 /* container */
 body {
-  background-color: var(--bg-black);
-  box-sizing: border-box;
-  padding: calc(var(--base-unit) * 10);
+	background-color: var(--bg-black);
+	box-sizing: border-box;
+	padding: calc(var(--base-unit) * 10);
 }
 #root {
-  background-color: var(--bg-gray);
-  padding: 0 calc(var(--base-unit) * 5);
+	background-color: var(--bg-gray);
+	padding: 0 calc(var(--base-unit) * 5);
 }
 
 /* svg */
 svg * {
-  transition: 0.3s ease;
+	transition: 0.3s ease;
 }
 svg:hover * {
-  fill: var(--point-1-deep);
-  fill-opacity: 1;
+	fill: var(--point-1-deep);
+	fill-opacity: 1;
 }
 
 /* cursor */
 .pointer {
-  cursor: pointer;
+	cursor: pointer;
+	transition: 0.4s ease;
+	&:hover {
+		transform: translateY(-2px);
+	}
 }
