@@ -1,5 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { Tprogress, Ttask } from "src/types/types";
+
+interface IboardSection {
+	children: React.ReactNode;
+	progress: Tprogress;
+}
 
 const StyledBoardSection = styled.div`
 	display: flex;
@@ -16,14 +22,17 @@ const StyledBoardSection = styled.div`
 		height: 100%;
 		box-sizing: border-box;
 		border-radius: 8px;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 	}
 `;
 
-function BoardSection() {
+function BoardSection({ children, progress }: IboardSection): JSX.Element {
 	return (
 		<StyledBoardSection>
-			<p className="boardTitle">시작 전</p>
-			<div className="boardBox"></div>
+			<p className="boardTitle">{progress}</p>
+			<div className="boardBox">{children}</div>
 		</StyledBoardSection>
 	);
 }
@@ -38,10 +47,18 @@ const StyledModeBoard = styled.div`
 function ModeBoard() {
 	return (
 		<StyledModeBoard>
-			<BoardSection></BoardSection>
-			<BoardSection></BoardSection>
-			<BoardSection></BoardSection>
-			<BoardSection></BoardSection>
+			<BoardSection progress="시작 전">
+				<p>할일</p>
+			</BoardSection>
+			<BoardSection progress="진행 중">
+				<p>할일</p>
+			</BoardSection>
+			<BoardSection progress="완료">
+				<p>할일</p>
+			</BoardSection>
+			<BoardSection progress="기타">
+				<p>할일</p>
+			</BoardSection>
 		</StyledModeBoard>
 	);
 }
