@@ -1,37 +1,59 @@
 import React from "react";
 import styled from "styled-components";
 
+type TbtnColor = "dark" | "light";
+
+type TbtnSize = "big" | "small";
+
 interface Ibutton {
 	children: React.ReactNode;
-	color: string;
-	size: string;
+	color: TbtnColor;
+	size: TbtnSize;
 	event?: () => void;
 }
 
-const StyledButton = styled.button<{ color: string; size: string }>`
+function getBGCbyColor(color: TbtnColor): string {
+	switch (color) {
+		case "dark":
+			return "var(--mono-black)";
+		case "light":
+			return "var(--bg-gray)";
+		default:
+			return "var(--mono-black)";
+	}
+}
+
+function getCbyColor(color: TbtnColor): string {
+	switch (color) {
+		case "dark":
+			return "var(--mono-white)";
+		case "light":
+			return "var(--mono-black)";
+		default:
+			return "var(--mono-white)";
+	}
+}
+
+function getPDbySize(size: TbtnSize): string {
+	switch (size) {
+		case "big":
+			return "var(--base-unit) calc(var(--base-unit) * 2)";
+		case "small":
+			return "var(--base-unit)";
+		default:
+			return "var(--base-unit) calc(var(--base-unit) * 2)";
+	}
+}
+
+const StyledButton = styled.button<{ color: TbtnColor; size: TbtnSize }>`
 	display: flex;
 	gap: 16px;
 	justify-content: center;
 	align-items: center;
 	border: none;
-	background-color: ${(props) =>
-		props.color
-			? props.color === "dark"
-				? "var(--mono-black)"
-				: "var(--bg-gray)"
-			: "var(--mono-black)"};
-	color: ${(props) =>
-		props.color
-			? props.color === "dark"
-				? "var(--mono-white)"
-				: "var(--mono-black)"
-			: "var(--mono-white)"};
-	padding: ${(props) =>
-		props.size
-			? props.size === "big"
-				? "var(--base-unit) calc(var(--base-unit) * 2)"
-				: "var(--base-unit)"
-			: "var(--base-unit) calc(var(--base-unit) * 2)"};
+	background-color: ${(props) => getBGCbyColor(props.color)};
+	color: ${(props) => getCbyColor(props.color)};
+	padding: ${(props) => getPDbySize(props.size)};
 	border-radius: 20px;
 `;
 

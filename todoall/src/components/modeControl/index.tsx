@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Tmode } from "src/types/types";
-import { useControlStore } from "@stores/modeStore";
+import { useControlStore } from "@stores/store";
 
 const StyledModeButtonBG = styled.span`
 	z-index: 0;

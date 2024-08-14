@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { Header } from "@components/header/index";
 import { ModeControl } from "@components/modeControl";
-import { useControlStore } from "@stores/modeStore";
+import { useControlStore } from "@stores/store";
 import { Tmode } from "./types/types";
 import { ModeAll } from "@components/modeAll";
 import { ModeBoard } from "@components/modeBoard";

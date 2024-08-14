@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Prev } from "@images/prev.svg";
 import { ReactComponent as Next } from "@images/next.svg";
-import { useControlStore } from "@stores/modeStore";
+import { useControlStore } from "@stores/store";
 
 const StyledDateControl = styled.div`
 	display: flex;
