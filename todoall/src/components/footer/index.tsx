@@ -19,7 +19,7 @@ export default function Footer() {
 		<StyledFooter>
 			<p className="contact">
 				<span className="capitalize caption dmSans">develop by</span>
-				<span className="caption dmSans link">imlinkseo@gamil.com</span>
+				<span className="caption dmSans link">imlinkseo@gmail.com</span>
 			</p>
 			<p className="capitalize caption dmSans">to do all</p>
 		</StyledFooter>
