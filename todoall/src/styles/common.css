@@ -20,6 +20,22 @@
 	--point-3: #6bf1d2;
 }
 
+/* container */
+.allCnt {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+.modeCnt {
+	display: flex;
+	gap: 16px;
+	width: 100%;
+}
+.modeCnt > * {
+	min-width: 640px;
+	max-width: calc(100% - 560px);
+}
+
 /* font */
 /* font face */
 body {

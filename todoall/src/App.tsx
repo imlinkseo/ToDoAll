@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Header } from "@components/header/index";
 import { ModeControl } from "@components/modeControl";
 import { useControlStore } from "@stores/store";
@@ -25,6 +25,7 @@ function App() {
 				return <ModeAll />;
 		}
 	}
+
 	return (
 		<>
 			<div className="App">

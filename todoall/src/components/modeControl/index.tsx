@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Tmode } from "src/types/types";
 import { useControlStore } from "@stores/store";
@@ -70,37 +70,48 @@ const StyledModeControl = styled.div`
 
 function ModeControl() {
 	const { setMode } = useControlStore();
+	const [target, setTarget] = useState<HTMLButtonElement | null>(null);
 
-	function getXYnMode(e: React.MouseEvent) {
+	function changeMode(e: React.MouseEvent): void {
+		let mode = (e.currentTarget as HTMLButtonElement).dataset.mode;
+		setMode(mode as Tmode);
+		setTarget(e.currentTarget as HTMLButtonElement);
+	}
+
+	function changeLeft(target: HTMLButtonElement) {
 		let bg: HTMLSpanElement | null = document.querySelector(".modelButtonBG");
 		let modeBtns: NodeListOf<Element> | null =
 			document.querySelectorAll(".modeBtn");
-		if (bg && e.currentTarget && modeBtns) {
+		if (bg && target && modeBtns) {
 			modeBtns.forEach((modeBtn) => {
 				modeBtn.classList.remove("selected");
 			});
-			e.currentTarget.classList.add("selected");
-			bg.style.left = `${(e.currentTarget as HTMLButtonElement).offsetLeft}px`;
-			let mode = (e.currentTarget as HTMLButtonElement).dataset.mode;
-			setMode(mode as Tmode);
+			target.classList.add("selected");
+			let offsetLeft = (target as HTMLButtonElement).offsetLeft;
+			bg.style.left = `${offsetLeft}px`;
 		}
-		return;
 	}
+
+	useEffect(() => {
+		if (target) {
+			changeLeft(target);
+		}
+	}, [target]);
 
 	return (
 		<>
 			<nav className="cnt pdb24">
 				<StyledModeControl>
-					<ModeButton event={getXYnMode} mode={"all"}>
+					<ModeButton event={changeMode} mode={"all"}>
 						<span className="capitalize">all</span>
 					</ModeButton>
-					<ModeButton event={getXYnMode} mode={"board"}>
+					<ModeButton event={changeMode} mode={"board"}>
 						<span className="capitalize">board</span>
 					</ModeButton>
-					<ModeButton event={getXYnMode} mode={"calendar"}>
+					<ModeButton event={changeMode} mode={"calendar"}>
 						<span className="capitalize">calendar</span>
 					</ModeButton>
-					<ModeButton event={getXYnMode} mode={"list"}>
+					<ModeButton event={changeMode} mode={"list"}>
 						<span className="capitalize">list</span>
 					</ModeButton>
 					<ModeButtonBG />

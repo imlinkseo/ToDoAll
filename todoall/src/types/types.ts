@@ -19,5 +19,8 @@ interface ItodoCard {
 interface ItodoCardMode extends ItodoCard {
 	mode: Tmode;
 }
+interface ItodoCardSpan extends ItodoCardMode {
+	span: number;
+}
 
-export type { Tmode, Tstatus, Ttodo, ItodoCard, ItodoCardMode };
+export type { Tmode, Tstatus, Ttodo, ItodoCard, ItodoCardMode, ItodoCardSpan };

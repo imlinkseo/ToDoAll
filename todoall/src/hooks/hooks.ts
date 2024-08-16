@@ -7,6 +7,10 @@ function makeDateString(date: Temporal.PlainDate | undefined): string {
 		: "-";
 }
 
+function addZero(value: number): string {
+	return value < 10 ? `0${value.toString()}` : value.toString();
+}
+
 function getContentWidthByMode(mode: Tmode): string {
 	switch (mode) {
 		case "all":
@@ -14,7 +18,7 @@ function getContentWidthByMode(mode: Tmode): string {
 		case "board":
 			return "calc(100% - 180px)";
 		case "calendar":
-			return "calc(100% - 180px)";
+			return "calc(100%)";
 		case "list":
 			return "calc(100% - 360px)";
 		default:
@@ -67,10 +71,85 @@ function getDisplayByMode(mode: Tmode): string {
 	}
 }
 
+function getOpacityByModeNstatus(mode: Tmode, status: Tstatus): string {
+	if (mode === "list") {
+		return "1";
+	} else {
+		if (status === "완료") {
+			return "1";
+		} else {
+			return "0.4";
+		}
+	}
+}
+
+function getUntilORendByModeNstatus(
+	mode: Tmode,
+	status: Tstatus,
+	until?: Temporal.PlainDate,
+	end?: Temporal.PlainDate
+): string {
+	if (mode === "list") {
+		return until instanceof Temporal.PlainDate ? makeDateString(until) : "-";
+	} else {
+		if (status === "완료") {
+			return end instanceof Temporal.PlainDate ? makeDateString(end) : "-";
+		} else if (status === "기타") {
+			return "-";
+		} else {
+			return until instanceof Temporal.PlainDate ? makeDateString(until) : "-";
+		}
+	}
+}
+
+function isInTime(
+	current: Temporal.PlainDate,
+	start: Temporal.PlainDate,
+	until?: Temporal.PlainDate,
+	end?: Temporal.PlainDate
+): boolean {
+	let startResult: number = Temporal.PlainDate.compare(current, start);
+	let endResult: number;
+	if (until instanceof Temporal.PlainDate && end instanceof Temporal.PlainDate) {
+		endResult = Temporal.PlainDate.compare(current, end);
+		return startResult >= 0 && endResult <= 0 ? true : false;
+	} else if (until instanceof Temporal.PlainDate) {
+		endResult = Temporal.PlainDate.compare(current, until);
+		return startResult >= 0 && endResult <= 0 ? true : false;
+	} else {
+		if (startResult === 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+function makeCalendarBlockClassName(
+	date: Temporal.PlainDate,
+	today: Temporal.PlainDate,
+	calendarDate: Temporal.PlainDate
+): string {
+	if (today.equals(calendarDate)) {
+		return "today";
+	} else if (date.equals(calendarDate)) {
+		return "selected";
+	} else if (calendarDate.month !== date.month) {
+		return "notThisMonth";
+	} else {
+		return "";
+	}
+}
+
 export {
 	makeDateString,
+	addZero,
 	getContentWidthByMode,
 	getBGCbyTypeNstatus,
 	getBGCbyStatus,
 	getDisplayByMode,
+	getOpacityByModeNstatus,
+	getUntilORendByModeNstatus,
+	isInTime,
+	makeCalendarBlockClassName,
 };

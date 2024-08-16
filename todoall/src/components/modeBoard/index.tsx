@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Tstatus, ItodoCard } from "src/types/types";
+import { Tmode, Tstatus } from "src/types/types";
 import { TodoCard } from "@components/todoCard";
-import { useControlStore, useTodoArrStore } from "@stores/store";
+import { useControlStore, useIntimeArrStore } from "@stores/store";
 
 interface IboardSection {
 	children: React.ReactNode;
@@ -40,37 +40,26 @@ function BoardSection({ children, status }: IboardSection): JSX.Element {
 	);
 }
 
-const StyledModeBoard = styled.div`
+const StyledModeBoard = styled.div<{ mode: Tmode }>`
 	display: flex;
-	min-height: calc(100vh - 432px);
+	min-height: ${(props) =>
+		props.mode === "all" ? "210px" : "calc(100vh - 432px)"};
 	width: 100%;
 	gap: 16px;
 `;
 
 function ModeBoard() {
 	const { mode } = useControlStore();
-	const { todoArr } = useTodoArrStore();
-	const todoTaskBefore: ItodoCard[] | null | undefined = todoArr.filter(
-		(item) => item.type === "업무" && item.status === "시작 전"
-	);
-	const todoTaskDoing: ItodoCard[] | null | undefined = todoArr.filter(
-		(item) => item.type === "업무" && item.status === "진행 중"
-	);
-	const todoTaskDone: ItodoCard[] | null | undefined = todoArr.filter(
-		(item) => item.type === "업무" && item.status === "완료"
-	);
-	const todoScheduleNroutine: ItodoCard[] | null | undefined = todoArr.filter(
-		(item) => item.type !== "업무"
-	);
+	const { intimeArr } = useIntimeArrStore();
 
 	return (
-		<StyledModeBoard>
+		<StyledModeBoard mode={mode}>
 			<BoardSection status="시작 전">
-				{todoTaskBefore && todoTaskBefore !== undefined ? (
-					todoTaskBefore.map((item, idx) => (
+				{intimeArr.todoTaskBefore && intimeArr.todoTaskBefore !== undefined ? (
+					intimeArr.todoTaskBefore.map((item, idx) => (
 						<TodoCard
 							uuid={item.uuid}
-							mode={mode}
+							mode={"board"}
 							key={idx}
 							type={item.type}
 							status={item.status}
@@ -85,11 +74,11 @@ function ModeBoard() {
 				)}
 			</BoardSection>
 			<BoardSection status="진행 중">
-				{todoTaskDoing && todoTaskDoing !== undefined ? (
-					todoTaskDoing.map((item, idx) => (
+				{intimeArr.todoTaskDoing && intimeArr.todoTaskDoing !== undefined ? (
+					intimeArr.todoTaskDoing.map((item, idx) => (
 						<TodoCard
 							uuid={item.uuid}
-							mode={mode}
+							mode={"board"}
 							key={idx}
 							type={item.type}
 							status={item.status}
@@ -104,11 +93,11 @@ function ModeBoard() {
 				)}
 			</BoardSection>
 			<BoardSection status="완료">
-				{todoTaskDone && todoTaskDone !== undefined ? (
-					todoTaskDone.map((item, idx) => (
+				{intimeArr.todoTaskDone && intimeArr.todoTaskDone !== undefined ? (
+					intimeArr.todoTaskDone.map((item, idx) => (
 						<TodoCard
 							uuid={item.uuid}
-							mode={mode}
+							mode={"board"}
 							key={idx}
 							type={item.type}
 							status={item.status}
@@ -123,11 +112,12 @@ function ModeBoard() {
 				)}
 			</BoardSection>
 			<BoardSection status="기타">
-				{todoScheduleNroutine && todoScheduleNroutine !== undefined ? (
-					todoScheduleNroutine.map((item, idx) => (
+				{intimeArr.todoScheduleNroutine &&
+				intimeArr.todoScheduleNroutine !== undefined ? (
+					intimeArr.todoScheduleNroutine.map((item, idx) => (
 						<TodoCard
 							uuid={item.uuid}
-							mode={mode}
+							mode={"board"}
 							key={idx}
 							type={item.type}
 							status={item.status}

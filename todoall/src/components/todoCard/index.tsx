@@ -6,6 +6,8 @@ import {
 	getContentWidthByMode,
 	getBGCbyTypeNstatus,
 	getDisplayByMode,
+	getUntilORendByModeNstatus,
+	getOpacityByModeNstatus,
 } from "@hooks/hooks";
 import { ReactComponent as Check } from "@images/check.svg";
 
@@ -27,10 +29,14 @@ const StyledTodoCard = styled.li<{
 		box-sizing: border-box;
 		background-color: ${(props) => getBGCbyTypeNstatus(props.type, props.status)};
 		.content {
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
 			font-weight: 500;
 			padding: 2px 0;
 			line-height: 24px;
 			box-sizing: border-box;
+			white-space: nowrap;
 			width: ${(props) => getContentWidthByMode(props.mode)};
 		}
 		.info {
@@ -44,6 +50,9 @@ const StyledTodoCard = styled.li<{
 				width: 80px;
 				background-color: var(--rgba-light-gray);
 				border-radius: 4px;
+			}
+			.until {
+				opacity: ${(props) => getOpacityByModeNstatus(props.mode, props.status)};
 			}
 			.end,
 			.status {
@@ -95,6 +104,24 @@ const StyledTodoCard = styled.li<{
 	}
 `;
 
+const StyledCalendarTodoCard = styled.li<{ type: Ttodo; status: Tstatus }>`
+	width: 100%;
+	border-radius: 4px;
+	background-color: var(--mono-white);
+	overflow: hidden;
+	.content {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		width: 100%;
+		overflow: hidden;
+	}
+	.ctn {
+		padding: 8px 6px;
+		box-sizing: border-box;
+		background-color: ${(props) => getBGCbyTypeNstatus(props.type, props.status)};
+	}
+`;
+
 function TodoCard({
 	uuid,
 	mode,
@@ -114,51 +141,102 @@ function TodoCard({
 			e.currentTarget.classList.add("checked");
 		}
 	}
-
-	return (
-		<StyledTodoCard mode={mode} type={type} status={status} content={content}>
-			<div className="ctn">
-				<p className="content">{content}</p>
-				<div className="info">
-					<p className="start">{makeDateString(start)}</p>
-					<p className="until">
-						{until && until !== undefined ? makeDateString(until) : "-"}
-					</p>
-					<p className="end">
-						{end && end !== undefined ? makeDateString(end) : "-"}
-					</p>
-					{type === "업무" && mode === "edit" && (
-						<form className={`status form-${uuid}`}>
-							<label
-								htmlFor={`before-${uuid}`}
-								className={`before ${status === "시작 전" && "checked"}`}
-							>
-								<span>시작 전</span>
-								<Check className="check" />
-							</label>
-							<input type="radio" name={`name-${uuid}`} id={`before-${uuid}`} />
-							<label
-								htmlFor={`doing-${uuid}`}
-								className={`doing ${status === "진행 중" && "checked"}`}
-							>
-								<span>진행 중</span>
-								<Check className="check" />
-							</label>
-							<input type="radio" name={`name-${uuid}`} id={`doing-${uuid}`} />
-							<label
-								htmlFor={`done-${uuid}`}
-								className={`done ${status === "완료" && "checked"}`}
-							>
-								<span> 완료</span>
-								<Check className="check" />
-							</label>
-							<input type="radio" name={`name-${uuid}`} id={`done-${uuid}`} />
-						</form>
-					)}
-				</div>
-			</div>
-		</StyledTodoCard>
-	);
+	switch (mode) {
+		case "all":
+			return <></>;
+		case "board":
+			return (
+				<StyledTodoCard mode={mode} type={type} status={status} content={content}>
+					<div className="ctn">
+						<p className="content">{content}</p>
+						<div className="info">
+							<p className="start">{makeDateString(start)}</p>
+							<p className="until">
+								{getUntilORendByModeNstatus(mode, status, until, end)}
+							</p>
+							<p className="end">
+								{end && end !== undefined ? makeDateString(end) : "-"}
+							</p>
+						</div>
+					</div>
+				</StyledTodoCard>
+			);
+		case "calendar":
+			return (
+				<StyledCalendarTodoCard type={type} status={status} content={content}>
+					<div className="ctn">
+						<p className="content smallBody">{content}</p>
+					</div>
+				</StyledCalendarTodoCard>
+			);
+		case "list":
+			return (
+				<StyledTodoCard mode={mode} type={type} status={status} content={content}>
+					<div className="ctn">
+						<p className="content">{content}</p>
+						<div className="info">
+							<p className="start">{makeDateString(start)}</p>
+							<p className="until">
+								{getUntilORendByModeNstatus(mode, status, until, end)}
+							</p>
+							<p className="end">
+								{end && end !== undefined ? makeDateString(end) : "-"}
+							</p>
+						</div>
+					</div>
+				</StyledTodoCard>
+			);
+		case "edit":
+			return (
+				<StyledTodoCard mode={mode} type={type} status={status} content={content}>
+					<div className="ctn">
+						<p className="content">{content}</p>
+						<div className="info">
+							<p className="start">{makeDateString(start)}</p>
+							<p className="until">
+								{getUntilORendByModeNstatus(mode, status, until, end)}
+							</p>
+							<p className="end">
+								{end && end !== undefined ? makeDateString(end) : "-"}
+							</p>
+							{type === "업무" && (
+								<form className={`status form-${uuid}`}>
+									<label
+										htmlFor={`before-${uuid}`}
+										className={`before ${status === "시작 전" && "checked"}`}
+										onClick={handleCheck}
+									>
+										<span>시작 전</span>
+										<Check className="check" />
+									</label>
+									<input type="radio" name={`name-${uuid}`} id={`before-${uuid}`} />
+									<label
+										htmlFor={`doing-${uuid}`}
+										className={`doing ${status === "진행 중" && "checked"}`}
+										onClick={handleCheck}
+									>
+										<span>진행 중</span>
+										<Check className="check" />
+									</label>
+									<input type="radio" name={`name-${uuid}`} id={`doing-${uuid}`} />
+									<label
+										htmlFor={`done-${uuid}`}
+										className={`done ${status === "완료" && "checked"}`}
+										onClick={handleCheck}
+									>
+										<span> 완료</span>
+										<Check className="check" />
+									</label>
+									<input type="radio" name={`name-${uuid}`} id={`done-${uuid}`} />
+								</form>
+							)}
+						</div>
+					</div>
+				</StyledTodoCard>
+			);
+		default:
+			return <></>;
+	}
 }
 
 export { TodoCard };
