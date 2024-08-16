@@ -8,6 +8,7 @@ import { ModeBoard } from "@components/modeBoard";
 import { ModeCalendar } from "@components/modeCalendar";
 import { ModeList } from "@components/modeList";
 import Footer from "@components/footer";
+import ModeCalendarNlist from "@components/modeCalendarNlist";
 
 function App() {
 	const { mode } = useControlStore();
@@ -18,9 +19,9 @@ function App() {
 			case "board":
 				return <ModeBoard />;
 			case "calendar":
-				return <ModeCalendar />;
+				return <ModeCalendarNlist />;
 			case "list":
-				return <ModeList />;
+				return <ModeCalendarNlist />;
 			default:
 				return <ModeAll />;
 		}

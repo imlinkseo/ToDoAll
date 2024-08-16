@@ -14,6 +14,7 @@ const StyledBoardSection = styled.div`
 	flex-direction: column;
 	width: 100%;
 	gap: 16px;
+	transition: 0.5s ease;
 	.boardTitle {
 		padding: 0 8px;
 		font-weight: 600;

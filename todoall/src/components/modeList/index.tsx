@@ -8,7 +8,6 @@ import {
 	useTodoArrStore,
 } from "@stores/store";
 import { getContentWidthByMode, getDisplayByMode } from "@hooks/hooks";
-import { ModeCalendar, ModeCalendarMin } from "@components/modeCalendar";
 
 const StyledModeListHeader = styled.div<{ mode: Tmode }>`
 	display: flex;
@@ -17,6 +16,7 @@ const StyledModeListHeader = styled.div<{ mode: Tmode }>`
 	overflow: hidden;
 	padding: 0 10px;
 	box-sizing: border-box;
+	font-weight: 600;
 	.content {
 		font-weight: 500;
 		padding: 2px 0;
@@ -29,13 +29,15 @@ const StyledModeListHeader = styled.div<{ mode: Tmode }>`
 		gap: 10px;
 		text-align: center;
 		& > * {
-			padding: 2px 0;
+			padding: 8px 0;
 			box-sizing: border-box;
-			line-height: 24px;
 			width: 80px;
 			border-radius: 4px;
 		}
-		.end,
+		.end {
+			display: ${(props) =>
+				props.mode === "all" ? "flex" : props.mode === "list" ? "flex" : "none"};
+		}
 		.status {
 			display: ${(props) => getDisplayByMode(props.mode)};
 			justify-content: center;
@@ -53,7 +55,7 @@ function ModeListHeader() {
 				<p className="start">시작일</p>
 				<p className="until">목표일</p>
 				<p className="end">완료일</p>
-				{/* <p className="status">상태</p> */}
+				{mode === "edit" && <p className="status">상태</p>}
 			</div>
 		</StyledModeListHeader>
 	);
@@ -73,108 +75,20 @@ function ModeListBody({ children }: ImodeListBody) {
 	return <StyledModeListBody>{children}</StyledModeListBody>;
 }
 
-const StyledModeList = styled.div`
+const StyledModeList = styled.div<{ mode: Tmode }>`
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-	width: 100%;
-`;
-const StyledModeListMin = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
-	width: 640px;
+	width: ${(props) =>
+		props.mode === "all" ? "50%" : props.mode === "list" ? "100%" : "640px"};
 `;
 
 function ModeList() {
+	const { mode } = useControlStore();
 	const { intimeArr } = useIntimeArrStore();
 
 	return (
-		<div className="modeCnt">
-			<ModeCalendarMin />
-			<StyledModeList>
-				<ModeListHeader />
-				<ModeListBody>
-					{intimeArr.todoScheduleNroutine &&
-					intimeArr.todoScheduleNroutine !== undefined ? (
-						intimeArr.todoScheduleNroutine.map((item, idx) => (
-							<TodoCard
-								uuid={item.uuid}
-								mode={"list"}
-								key={idx}
-								type={item.type}
-								status={item.status}
-								content={item.content}
-								start={item.start}
-								until={item.until}
-								end={item.end}
-							/>
-						))
-					) : (
-						<></>
-					)}
-					{intimeArr.todoTaskDoing && intimeArr.todoTaskDoing !== undefined ? (
-						intimeArr.todoTaskDoing.map((item, idx) => (
-							<TodoCard
-								uuid={item.uuid}
-								mode={"list"}
-								key={idx}
-								type={item.type}
-								status={item.status}
-								content={item.content}
-								start={item.start}
-								until={item.until}
-								end={item.end}
-							/>
-						))
-					) : (
-						<></>
-					)}
-					{intimeArr.todoTaskBefore && intimeArr.todoTaskBefore !== undefined ? (
-						intimeArr.todoTaskBefore.map((item, idx) => (
-							<TodoCard
-								uuid={item.uuid}
-								mode={"list"}
-								key={idx}
-								type={item.type}
-								status={item.status}
-								content={item.content}
-								start={item.start}
-								until={item.until}
-								end={item.end}
-							/>
-						))
-					) : (
-						<></>
-					)}
-					{intimeArr.todoTaskDone && intimeArr.todoTaskDone !== undefined ? (
-						intimeArr.todoTaskDone.map((item, idx) => (
-							<TodoCard
-								uuid={item.uuid}
-								mode={"list"}
-								key={idx}
-								type={item.type}
-								status={item.status}
-								content={item.content}
-								start={item.start}
-								until={item.until}
-								end={item.end}
-							/>
-						))
-					) : (
-						<></>
-					)}
-				</ModeListBody>
-			</StyledModeList>
-		</div>
-	);
-}
-
-function ModeListMin() {
-	const { intimeArr } = useIntimeArrStore();
-
-	return (
-		<StyledModeListMin>
+		<StyledModeList mode={mode}>
 			<ModeListHeader />
 			<ModeListBody>
 				{intimeArr.todoScheduleNroutine &&
@@ -182,7 +96,7 @@ function ModeListMin() {
 					intimeArr.todoScheduleNroutine.map((item, idx) => (
 						<TodoCard
 							uuid={item.uuid}
-							mode={"board"}
+							mode={mode === "calendar" ? "board" : "list"}
 							key={idx}
 							type={item.type}
 							status={item.status}
@@ -199,7 +113,7 @@ function ModeListMin() {
 					intimeArr.todoTaskDoing.map((item, idx) => (
 						<TodoCard
 							uuid={item.uuid}
-							mode={"board"}
+							mode={mode === "calendar" ? "board" : "list"}
 							key={idx}
 							type={item.type}
 							status={item.status}
@@ -216,7 +130,7 @@ function ModeListMin() {
 					intimeArr.todoTaskBefore.map((item, idx) => (
 						<TodoCard
 							uuid={item.uuid}
-							mode={"board"}
+							mode={mode === "calendar" ? "board" : "list"}
 							key={idx}
 							type={item.type}
 							status={item.status}
@@ -233,88 +147,7 @@ function ModeListMin() {
 					intimeArr.todoTaskDone.map((item, idx) => (
 						<TodoCard
 							uuid={item.uuid}
-							mode={"board"}
-							key={idx}
-							type={item.type}
-							status={item.status}
-							content={item.content}
-							start={item.start}
-							until={item.until}
-							end={item.end}
-						/>
-					))
-				) : (
-					<></>
-				)}
-			</ModeListBody>
-		</StyledModeListMin>
-	);
-}
-
-function ModeListMax() {
-	const { intimeArr } = useIntimeArrStore();
-
-	return (
-		<StyledModeList>
-			<ModeListHeader />
-			<ModeListBody>
-				{intimeArr.todoScheduleNroutine &&
-				intimeArr.todoScheduleNroutine !== undefined ? (
-					intimeArr.todoScheduleNroutine.map((item, idx) => (
-						<TodoCard
-							uuid={item.uuid}
-							mode={"board"}
-							key={idx}
-							type={item.type}
-							status={item.status}
-							content={item.content}
-							start={item.start}
-							until={item.until}
-							end={item.end}
-						/>
-					))
-				) : (
-					<></>
-				)}
-				{intimeArr.todoTaskDoing && intimeArr.todoTaskDoing !== undefined ? (
-					intimeArr.todoTaskDoing.map((item, idx) => (
-						<TodoCard
-							uuid={item.uuid}
-							mode={"board"}
-							key={idx}
-							type={item.type}
-							status={item.status}
-							content={item.content}
-							start={item.start}
-							until={item.until}
-							end={item.end}
-						/>
-					))
-				) : (
-					<></>
-				)}
-				{intimeArr.todoTaskBefore && intimeArr.todoTaskBefore !== undefined ? (
-					intimeArr.todoTaskBefore.map((item, idx) => (
-						<TodoCard
-							uuid={item.uuid}
-							mode={"board"}
-							key={idx}
-							type={item.type}
-							status={item.status}
-							content={item.content}
-							start={item.start}
-							until={item.until}
-							end={item.end}
-						/>
-					))
-				) : (
-					<></>
-				)}
-				{intimeArr.todoTaskDone && intimeArr.todoTaskDone !== undefined ? (
-					intimeArr.todoTaskDone.map((item, idx) => (
-						<TodoCard
-							uuid={item.uuid}
-							mode={"board"}
+							mode={mode === "calendar" ? "board" : "list"}
 							key={idx}
 							type={item.type}
 							status={item.status}
@@ -332,4 +165,4 @@ function ModeListMax() {
 	);
 }
 
-export { ModeList, ModeListMin, ModeListMax };
+export { ModeList };

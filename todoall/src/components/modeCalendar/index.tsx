@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { ModeList, ModeListMin } from "@components/modeList";
 import { Temporal } from "@js-temporal/polyfill";
 import {
 	useCalendarMonth,
@@ -8,7 +7,7 @@ import {
 	useTodoArrStore,
 } from "@stores/store";
 import { addZero, isInTime, makeCalendarBlockClassName } from "@hooks/hooks";
-import { ItodoCardMode, Tstatus, Ttodo } from "src/types/types";
+import { ItodoCardMode, Tmode, Tstatus, Ttodo } from "src/types/types";
 import { TodoCard } from "@components/todoCard";
 
 const StyledCalendarTodoCard = styled.li<{ type: Ttodo; status: Tstatus }>``;
@@ -121,112 +120,25 @@ const StyledCalendar = styled.div`
 	overflow: hidden;
 `;
 
-const StyledModeCalendar = styled.div`
+const StyledModeCalendar = styled.div<{ mode: Tmode }>`
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-	width: 100%;
-`;
-const StyledModeCalendarMin = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
-	width: 640px;
+	max-width: ${(props) =>
+		props.mode === "all"
+			? "50%"
+			: props.mode === "list"
+			? "640px"
+			: "calc(100% - 16px - 640px)"};
 `;
 
 function ModeCalendar() {
+	const { mode } = useControlStore();
 	const { month } = useCalendarMonth();
 	const { todoArr } = useTodoArrStore();
 
 	return (
-		<div className="modeCnt">
-			<StyledModeCalendar>
-				<CalendarHeader />
-				<StyledCalendar>
-					{month.map((day: Temporal.PlainDate, idx: number) => (
-						<CalendarBlock calendarDate={day} key={idx}>
-							<p className="date">{addZero(day.day)}</p>
-							<StyledCalendarTodoBody>
-								{todoArr && todoArr !== undefined ? (
-									todoArr
-										.filter(
-											(inTime) =>
-												isInTime(day, inTime.start, inTime.until, inTime.end) === true
-										)
-										.map((item, idx) => (
-											<TodoCard
-												uuid={item.uuid}
-												mode={"calendar"}
-												key={idx}
-												type={item.type}
-												status={item.status}
-												content={item.content}
-												start={item.start}
-												until={item.until}
-												end={item.end}
-											/>
-										))
-								) : (
-									<></>
-								)}
-							</StyledCalendarTodoBody>
-						</CalendarBlock>
-					))}
-				</StyledCalendar>
-			</StyledModeCalendar>
-			<ModeListMin />
-		</div>
-	);
-}
-
-function ModeCalendarMin() {
-	const { month } = useCalendarMonth();
-	const { todoArr } = useTodoArrStore();
-
-	return (
-		<StyledModeCalendarMin>
-			<CalendarHeader />
-			<StyledCalendar>
-				{month.map((day: Temporal.PlainDate, idx: number) => (
-					<CalendarBlock calendarDate={day} key={idx}>
-						<p className="date">{addZero(day.day)}</p>
-						<StyledCalendarTodoBody>
-							{todoArr && todoArr !== undefined ? (
-								todoArr
-									.filter(
-										(inTime) =>
-											isInTime(day, inTime.start, inTime.until, inTime.end) === true
-									)
-									.map((item, idx) => (
-										<TodoCard
-											uuid={item.uuid}
-											mode={"calendar"}
-											key={idx}
-											type={item.type}
-											status={item.status}
-											content={item.content}
-											start={item.start}
-											until={item.until}
-											end={item.end}
-										/>
-									))
-							) : (
-								<></>
-							)}
-						</StyledCalendarTodoBody>
-					</CalendarBlock>
-				))}
-			</StyledCalendar>
-		</StyledModeCalendarMin>
-	);
-}
-
-function ModeCalendarMax() {
-	const { month } = useCalendarMonth();
-	const { todoArr } = useTodoArrStore();
-
-	return (
-		<StyledModeCalendar>
+		<StyledModeCalendar mode={mode}>
 			<CalendarHeader />
 			<StyledCalendar>
 				{month.map((day: Temporal.PlainDate, idx: number) => (
@@ -263,4 +175,4 @@ function ModeCalendarMax() {
 	);
 }
 
-export { ModeCalendar, ModeCalendarMin, ModeCalendarMax };
+export { ModeCalendar };
