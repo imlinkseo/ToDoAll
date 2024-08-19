@@ -1,14 +1,13 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import { Header } from "@components/header/index";
 import { ModeControl } from "@components/modeControl";
 import { useControlStore } from "@stores/store";
 import { Tmode } from "./types/types";
 import { ModeAll } from "@components/modeAll";
 import { ModeBoard } from "@components/modeBoard";
-import { ModeCalendar } from "@components/modeCalendar";
-import { ModeList } from "@components/modeList";
 import Footer from "@components/footer";
 import ModeCalendarNlist from "@components/modeCalendarNlist";
+import ControlPanel from "@components/controlPanel";
 
 function App() {
 	const { mode } = useControlStore();
@@ -33,6 +32,7 @@ function App() {
 				<Header />
 				<ModeControl />
 				<main>{renderModeComponent(mode)}</main>
+				{/* <ControlPanel /> */}
 				<Footer />
 			</div>
 		</>

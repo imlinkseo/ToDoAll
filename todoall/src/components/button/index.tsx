@@ -1,4 +1,5 @@
 import React from "react";
+import { TControlMode } from "src/types/types";
 import styled from "styled-components";
 
 type TbtnColor = "dark" | "light";
@@ -9,7 +10,11 @@ interface Ibutton {
 	children: React.ReactNode;
 	color: TbtnColor;
 	size: TbtnSize;
-	event?: () => void;
+	event?: (e: any) => void;
+}
+
+interface IdataButton extends Ibutton {
+	data: TControlMode;
 }
 
 function getBGCbyColor(color: TbtnColor): string {
@@ -47,7 +52,7 @@ function getPDbySize(size: TbtnSize): string {
 
 const StyledButton = styled.button<{ color: TbtnColor; size: TbtnSize }>`
 	display: flex;
-	gap: 16px;
+	gap: 8px;
 	justify-content: center;
 	align-items: center;
 	border: none;
@@ -65,4 +70,24 @@ function Button({ color, size, children, event }: Ibutton): JSX.Element {
 	);
 }
 
-export { Button };
+function DataButton({
+	color,
+	size,
+	children,
+	event,
+	data,
+}: IdataButton): JSX.Element {
+	return (
+		<StyledButton
+			color={color}
+			size={size}
+			onClick={event}
+			data-mode={data}
+			className="pointer"
+		>
+			{children}
+		</StyledButton>
+	);
+}
+
+export { Button, DataButton };

@@ -1,3 +1,4 @@
 {
-	"cSpell.words": ["craco", "zustand"]
+	"cSpell.words": ["craco", "zustand"],
+	"editor.formatOnSave": true
 }

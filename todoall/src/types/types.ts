@@ -6,6 +6,8 @@ type Tstatus = "시작 전" | "진행 중" | "완료" | "기타";
 
 type Ttodo = "업무" | "일정" | "루틴";
 
+type TControlMode = "normal" | "add" | "modify" | "delete";
+
 interface ItodoCard {
 	uuid: string;
 	type: Ttodo;
@@ -19,8 +21,17 @@ interface ItodoCard {
 interface ItodoCardMode extends ItodoCard {
 	mode: Tmode;
 }
-interface ItodoCardSpan extends ItodoCardMode {
-	span: number;
+
+interface IcontrolCard {
+	controlMode: TControlMode;
 }
 
-export type { Tmode, Tstatus, Ttodo, ItodoCard, ItodoCardMode, ItodoCardSpan };
+export type {
+	Tmode,
+	Tstatus,
+	Ttodo,
+	TControlMode,
+	ItodoCard,
+	IcontrolCard,
+	ItodoCardMode,
+};

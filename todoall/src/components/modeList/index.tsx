@@ -1,13 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { ItodoCard, Tmode } from "src/types/types";
+import { Tmode } from "src/types/types";
 import { TodoCard } from "@components/todoCard";
-import {
-	useControlStore,
-	useIntimeArrStore,
-	useTodoArrStore,
-} from "@stores/store";
+import { useControlStore, useIntimeArrStore } from "@stores/store";
 import { getContentWidthByMode, getDisplayByMode } from "@hooks/hooks";
+import ControlPanel from "@components/controlPanel";
 
 const StyledModeListHeader = styled.div<{ mode: Tmode }>`
 	display: flex;
@@ -28,6 +25,7 @@ const StyledModeListHeader = styled.div<{ mode: Tmode }>`
 		display: flex;
 		gap: 10px;
 		text-align: center;
+
 		& > * {
 			padding: 8px 0;
 			box-sizing: border-box;
@@ -35,6 +33,7 @@ const StyledModeListHeader = styled.div<{ mode: Tmode }>`
 			border-radius: 4px;
 		}
 		.end {
+			justify-content: center;
 			display: ${(props) =>
 				props.mode === "all" ? "flex" : props.mode === "list" ? "flex" : "none"};
 		}
@@ -161,6 +160,7 @@ function ModeList() {
 					<></>
 				)}
 			</ModeListBody>
+			<ControlPanel />
 		</StyledModeList>
 	);
 }
